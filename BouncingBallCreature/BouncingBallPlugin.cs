@@ -3,10 +3,10 @@ using Fisobs.Core;
 using BepInEx.Logging;
 using UnityEngine;
 
-namespace ScutigeraCreature;
+namespace BouncingBallCreature;
 
-[BepInPlugin("lb-fgf-m4r-ik.scutigera-creature", nameof(ScutigeraCreature), "0.1.0")]
-sealed class ScutigeraPlugin : BaseUnityPlugin
+[BepInPlugin("lb-fgf-m4r-ik.bouncing-ball-creature", nameof(BouncingBallCreature), "0.1.0")]
+sealed class BouncingBallPlugin : BaseUnityPlugin
 {
     internal static ManualLogSource? logger;
 
@@ -16,7 +16,7 @@ sealed class ScutigeraPlugin : BaseUnityPlugin
         // To change the loaded texture's properties...
         HK.On.Fisobs.Core.Ext.LoadAtlasFromEmbRes += (orig, assembly, resource) =>
         {
-            if (assembly.FullName.Contains("Scutigera"))
+            if (assembly.FullName.Contains("BouncingBall"))
             {
                 using var stream = assembly.GetManifestResourceStream(resource);
                 if (stream is null) return null;
@@ -28,7 +28,7 @@ sealed class ScutigeraPlugin : BaseUnityPlugin
             }
             else return orig(assembly, resource);
         };
-        Content.Register(new ScutigeraCritob());
+        Content.Register(new BouncingBallCritob());
     }
 
     public void OnDisable()

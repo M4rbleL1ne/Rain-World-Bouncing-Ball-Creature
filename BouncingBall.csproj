@@ -6,24 +6,18 @@
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	
   <ItemGroup>
-	<EmbeddedResource Include="assets\icon_Scutigera.png">
+    <EmbeddedResource Include="assets\BoBShellA.png">
       <LogicalName>%(Filename)</LogicalName>
-	</EmbeddedResource>
-	<EmbeddedResource Include="assets\ScutigeraBackShell.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="assets\BoBShellB.png">
+      <LogicalName>%(Filename)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="assets\BoBShellC.png">
 	  <LogicalName>%(Filename)</LogicalName>
-	</EmbeddedResource>
-	<EmbeddedResource Include="assets\ScutigeraBellyShell.png">
-	  <LogicalName>%(Filename)</LogicalName>
-	</EmbeddedResource>
-	<EmbeddedResource Include="assets\ScutigeraLegB.png">
-	  <LogicalName>%(Filename)</LogicalName>
-	</EmbeddedResource>
-	<EmbeddedResource Include="assets\ScutigeraSegment.png">
-	  <LogicalName>%(Filename)</LogicalName>
-	</EmbeddedResource>
-	<EmbeddedResource Include="assets\ScutigeraWing.png">
+    </EmbeddedResource>
+	<EmbeddedResource Include="assets\icon_BouncingBall.png">
 	  <LogicalName>%(Filename)</LogicalName>
 	</EmbeddedResource>
   </ItemGroup>
@@ -34,6 +28,9 @@
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>References\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="CoralReef">
+      <HintPath>References\CoralReef.dll</HintPath>
     </Reference>
     <Reference Include="Fisobs">
       <HintPath>References\Fisobs.dll</HintPath>
