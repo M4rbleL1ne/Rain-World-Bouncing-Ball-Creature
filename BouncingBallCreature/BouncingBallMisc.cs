@@ -7,8 +7,6 @@ namespace BouncingBallCreature;
 
 sealed class BouncingBallMisc
 {
-    static bool AddToCat = true;
-
     internal BouncingBallMisc()
     {
         On.WorldLoader.CreatureTypeFromString += (orig, s) => Regex.IsMatch(s, "/bouncingball/gi") || Regex.IsMatch(s, "/bob/gi") ? EnumExt_BouncingBall.BouncingBall : orig(s);
@@ -22,17 +20,6 @@ sealed class BouncingBallMisc
                 exponential += .3f;
             }
             else orig(critType, ref linear, ref exponential);
-        };
-        On.DevInterface.RoomAttractivenessPanel.ctor += (orig, self, owner, IDstring, parentNode, pos, title, mapPage) =>
-        {
-            orig(self, owner, IDstring, parentNode, pos, title, mapPage);
-            if (AddToCat)
-            {
-                int newSz = self.categories[7].Length + 1;
-                Array.Resize(ref self.categories[7], newSz);
-                self.categories[7][newSz - 1] = StaticWorld.GetCreatureTemplate(EnumExt_BouncingBall.BouncingBall).index;
-                AddToCat = false;
-            }
         };
         On.MultiplayerUnlocks.UnlockedCritters += (orig, ID) =>
         {
