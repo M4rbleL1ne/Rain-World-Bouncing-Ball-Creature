@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BouncingBallCreature;
 
-[BepInPlugin("lb-fgf-m4r-ik.bouncing-ball-creature", nameof(BouncingBallCreature), "0.1.0")]
+[BepInPlugin("lb-fgf-m4r-ik.bouncing-ball-creature", nameof(BouncingBallCreature), "0.1.0"), BepInDependency("github.notfood.BepInExPartialityWrapper", BepInDependency.DependencyFlags.SoftDependency)]
 sealed class BouncingBallPlugin : BaseUnityPlugin
 {
     internal static ManualLogSource? logger;
