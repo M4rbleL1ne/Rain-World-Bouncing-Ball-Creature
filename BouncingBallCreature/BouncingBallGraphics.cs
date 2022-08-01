@@ -28,7 +28,8 @@ sealed class BouncingBallGraphics
                     rotation = Custom.AimFromOneVectorToAnother(new(rCam.room.lightAngle.x, 0f - rCam.room.lightAngle.y), new(0f, 0f)),
                     color = new(.003921569f, 0f, 0f)
                 };
-                for (int j = 0; j < 2; j++) sLeaser.sprites[4 + j].scale = 2f;
+                for (var j = 0; j < 2; j++)
+                    sLeaser.sprites[4 + j].scale = 2f;
                 self.AddToContainer(sLeaser, rCam, null);
             }
         };
@@ -36,10 +37,10 @@ sealed class BouncingBallGraphics
         {
             if (self.snail is null || (self.snail.Bob() && self.snail.dead))
             {
-                foreach (var spr in sLeaser.sprites)
+                for (var i = 0; i < sLeaser.sprites.Length; i++)
                 {
-                    spr.alpha = 0f;
-                    spr.scale = 0f;
+                    sLeaser.sprites[i].alpha = 0f;
+                    sLeaser.sprites[i].scale = 0f;
                 }
                 sLeaser.CleanSpritesAndRemove();
                 return;
@@ -79,7 +80,8 @@ sealed class BouncingBallGraphics
                 self.snail.shellColor[1] = palette.texture.GetPixel(30, 5 - self.snail.get_effectColorRND(1) * 2);
                 sLeaser.sprites[7].color = self.snail.shellColor[1];
                 sLeaser.sprites[8].color = self.snail.shellColor[1];
-                for (int j = 0; j < 2; j++) sLeaser.sprites[4 + j].color = self.snail.shellColor[0];
+                for (var j = 0; j < 2; j++)
+                    sLeaser.sprites[4 + j].color = self.snail.shellColor[0];
             }
         };
     }

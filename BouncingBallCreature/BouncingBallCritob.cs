@@ -13,10 +13,17 @@ sealed class BouncingBallCritob : Critob
     {
         Icon = new SimpleIcon("icon_BouncingBall", Color.white);
         RegisterUnlock(KillScore.Configurable(2), EnumExt_BouncingBall.BouncingBallUnlock);
-        new BouncingBallMisc();
-        new BouncingBall();
-        new BouncingBallAI();
-        new BouncingBallGraphics();
+        try
+        {
+            new BouncingBallMisc();
+            new BouncingBall();
+            new BouncingBallAI();
+            new BouncingBallGraphics();
+        }
+        catch (System.Exception ex)
+        {
+            BouncingBallPlugin.logger?.LogError(ex);
+        }
     }
 
     public override IEnumerable<CreatureTemplate> GetTemplates()
@@ -84,7 +91,8 @@ sealed class BouncingBallCritob : Critob
     public override void LoadResources(RainWorld rainWorld)
     {
         string[] sprAr = { "BoBShellA", "BoBShellB", "BoBShellC", "icon_BouncingBall" };
-        foreach (var spr in sprAr) Ext.LoadAtlasFromEmbRes(GetType().Assembly, spr);
+        foreach (var spr in sprAr)
+            Ext.LoadAtlasFromEmbRes(GetType().Assembly, spr);
     }
 
     public override CreatureTemplate.Type? ArenaFallback(CreatureTemplate.Type type) => CreatureTemplate.Type.Snail;

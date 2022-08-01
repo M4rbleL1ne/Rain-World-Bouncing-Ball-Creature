@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System;
 using MonoMod.Cil;
 using static Mono.Cecil.Cil.OpCodes;
 
@@ -19,21 +18,24 @@ sealed class BouncingBallMisc
                 linear += .2f;
                 exponential += .3f;
             }
-            else orig(critType, ref linear, ref exponential);
+            else
+                orig(critType, ref linear, ref exponential);
         };
         On.MultiplayerUnlocks.UnlockedCritters += (orig, ID) =>
         {
             var list = orig(ID);
-            if (ID is MultiplayerUnlocks.LevelUnlockID.Hidden) list.Add(EnumExt_BouncingBall.BouncingBall);
+            if (ID is MultiplayerUnlocks.LevelUnlockID.Hidden)
+                list.Add(EnumExt_BouncingBall.BouncingBall);
             return list;
         };
         On.RoomRealizer.RoomPerformanceEstimation += (orig, self, testRoom) =>
         {
             var res = orig(self, testRoom);
-            for (int j = 0; j < testRoom.creatures.Count; j++)
+            for (var j = 0; j < testRoom.creatures.Count; j++)
             {
                 // orig already added 10f for the same creature, so we just need to add 10f again to add 20f in total like Snail
-                if (testRoom.creatures[j].state.alive && testRoom.creatures[j].creatureTemplate.type == EnumExt_BouncingBall.BouncingBall) res += 10f;
+                if (testRoom.creatures[j].state.alive && testRoom.creatures[j].creatureTemplate.type == EnumExt_BouncingBall.BouncingBall)
+                    res += 10f;
             }
             return res;
         };
@@ -41,23 +43,34 @@ sealed class BouncingBallMisc
         IL.Leech.Swim += il =>
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdarg(0),
+            var loc = -1;
+            var loc2 = -1;
+            if (c.TryGotoNext(
                 x => x.MatchLdfld<Leech>("school"),
                 x => x.MatchLdfld<Leech.LeechSchool>("prey"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchCallvirt(out _),
+                x => x.MatchLdloc(out loc),
+                x => x.MatchCallOrCallvirt(out _),
                 x => x.MatchLdfld<Leech.LeechSchool.LeechPrey>("creature"),
-                x => x.MatchCallvirt<Creature>("get_Template"),
+                x => x.MatchCallOrCallvirt<Creature>("get_Template"),
                 x => x.MatchLdfld<CreatureTemplate>("type"),
                 x => x.MatchLdcI4(15),
-                x => x.MatchBneUn(out _)))
+                x => x.MatchBneUn(out _),
+                x => x.MatchLdloc(out loc2))
+            && loc != -1 && loc2 != -1)
             {
-                c.Prev.Previous.OpCode = Call;
-                c.Prev.Previous.Operand = typeof(BouncingBallExtenstions).GetMethod("SnailOrBob");
-                c.Prev.OpCode = Brfalse;
+                c.Emit(Ldloc, il.Body.Variables[loc]);
+                c.Emit(Ldloc, il.Body.Variables[loc2]);
+                c.EmitDelegate((Leech self, int num2, float num3) =>
+                {
+                    if (self.school?.prey?[num2]?.creature?.Template.type == EnumExt_BouncingBall.BouncingBall)
+                        num3 *= 10f;
+                    return num3;
+                });
+                c.Emit(Stloc, il.Body.Variables[loc2]);
+                c.Emit(Ldarg_0);
             }
-            else BouncingBallPlugin.logger?.LogError("Couldn't ILHook Leech.Swim!");
+            else
+                BouncingBallPlugin.logger?.LogError("Couldn't ILHook Leech.Swim!");
         };
     }
 }
